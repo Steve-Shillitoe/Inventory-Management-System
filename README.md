@@ -1,1 +1,1 @@
-IMS.UseCases is a class library
+IMS.UseCases & IMS.CoreBusiness are class libraries.
