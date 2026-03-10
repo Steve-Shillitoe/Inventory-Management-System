@@ -1,4 +1,6 @@
 using IMS.Plugins.InMemory;
+using IMS.UseCases.Inventories;
+using IMS.UseCases.Inventories.Interfaces;
 using IMS.UseCases.PluginInterfaces;
 using IMS.WebApp.Components;
 using System.ComponentModel;
@@ -12,6 +14,7 @@ builder.Services.AddRazorComponents();
 // Whenever the app needs an IInventoryRepository, it will create an instance of InventoryRepository and provide it.
 // The AddSingleton method means that the same instance of InventoryRepository will be used throughout the app's lifetime.
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
+builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
