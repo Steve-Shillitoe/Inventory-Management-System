@@ -1,11 +1,14 @@
 using IMS.Plugins.InMemory;
 using IMS.UseCases.PluginInterfaces;
 using IMS.WebApp.Components;
+using System.ComponentModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// This container stores all the services that the app can request (inject) later.
 builder.Services.AddRazorComponents();
+// Configuring Dependency Injection (DI)
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 var app = builder.Build();
 
