@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // This container stores all the services that the app can request (inject) later.
 builder.Services.AddRazorComponents();
 // Configuring Dependency Injection (DI)
+// Whenever the app needs an IInventoryRepository, it will create an instance of InventoryRepository and provide it.
+// The AddSingleton method means that the same instance of InventoryRepository will be used throughout the app's lifetime.
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 var app = builder.Build();
 
