@@ -14,13 +14,18 @@ namespace IMS.Plugins.InMemory
 				new Inventory {InventoryId = 2, InventoryName = "Bike Frame", Quantity = 10, Price = 15 };
 				new Inventory {InventoryId = 3, InventoryName = "Bike Wheel", Quantity = 20, Price = 8 };
 				new Inventory {InventoryId = 4, InventoryName = "Bike Pedals", Quantity = 20, Price = 1 };
-			}
-			;
+			};
 		}
 
-		public Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
+		public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
 		{
-			throw new NotImplementedException();
+			if (string.IsNullOrEmpty(name))
+				return (IEnumerable<Inventory>)Task.FromResult(_inventories);
+
+			return (IEnumerable<Inventory>)Task
+				.FromResult(_inventories
+				.Where(x => x.InventoryName.
+				Contains(name, StringComparison.OrdinalIgnoreCase)));
 		}
 	}
 }
