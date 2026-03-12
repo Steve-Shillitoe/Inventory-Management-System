@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+
+@inject IViewInventoriesByNameUseCase viewInventoriesByNameUseCase
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Quanity</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody> 
+        @foreach (var inventory in inventories)
+        {
+            <tr>
+                <td>@inventory.InventoryName</td>
+                <td>@inventory.Quantity</td>
+                <td>@inventory.Price.ToString("c")</td>
+                <td>
+                    <button
+                        type="button"
+                        class="btn btn-light">
+                        Edit
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Inventory>? inventories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        inventories = (await viewInventoriesByNameUseCase.ExecuteAsync()).ToList();
+    }
+}
