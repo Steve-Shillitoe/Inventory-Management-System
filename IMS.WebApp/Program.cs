@@ -15,6 +15,7 @@ builder.Services.AddRazorComponents();
 // The AddSingleton method means that the same instance of InventoryRepository will be used throughout the app's lifetime.
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
+builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
