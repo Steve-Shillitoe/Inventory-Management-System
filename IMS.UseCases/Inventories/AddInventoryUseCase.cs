@@ -1,0 +1,22 @@
+﻿using IMS.CoreBusiness;
+using IMS.UseCases.PluginInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace IMS.UseCases.Inventories
+{
+	public class AddInventoryUseCase : IAddInventoryUseCase
+	{
+		private readonly IInventoryRepository _inventoryRepository;
+		public AddInventoryUseCase(IInventoryRepository inventoryRepository)
+		{
+			this._inventoryRepository = inventoryRepository;
+		}
+		public async Task ExecuteAsync(Inventory inventory)
+		{
+			await this._inventoryRepository.AddInventoryAsync(inventory);
+			//await this._inventoryRepository.SaveAsync();
+		}
+	}
+}
