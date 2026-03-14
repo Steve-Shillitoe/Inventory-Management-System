@@ -4,6 +4,9 @@
 <h3>Add Inventory</h3>
 
 <EditForm Model="inventory" FormName="formAddInventory" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
     <div class="form-group">
         <label for="inventoryName">Inventory Name</label>
         <InputText 
