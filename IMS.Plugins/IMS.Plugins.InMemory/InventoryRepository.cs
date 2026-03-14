@@ -31,6 +31,20 @@ namespace IMS.Plugins.InMemory
 			return Task.CompletedTask;
 		}
 
+		public Task UpdateInventoryAsync(Inventory inventory)
+		{
+			// Find the index of the inventory to be edited
+			var index = _inventories.FindIndex(i => i.InventoryId == inventory.InventoryId);
+
+			// If the inventory is found, update it
+			if (index != -1)
+			{
+				_inventories[index] = inventory;
+			}
+
+			return Task.CompletedTask;
+		}
+
 		public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
 		{
 			if (string.IsNullOrEmpty(name))
