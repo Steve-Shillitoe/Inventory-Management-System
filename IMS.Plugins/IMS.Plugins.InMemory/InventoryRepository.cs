@@ -33,15 +33,30 @@ namespace IMS.Plugins.InMemory
 
 		public Task UpdateInventoryAsync(Inventory inventory)
 		{
+			// Check if another inventory with the same name exists (excluding the current inventory)
+			// This ensures that we don't have duplicate inventory names after the update
+			// The check is done by comparing the inventory name of the inventory being updated with all other inventories in the list,
+			// excluding the one being updated (identified by its InventoryId).
+			if (_inventories.Any(x => x.InventoryId != inventory.InventoryId &&
+				x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+				return Task.CompletedTask;
+
 			// Find the index of the inventory to be edited
-			var index = _inventories.FindIndex(i => i.InventoryId == inventory.InventoryId);
+			//var index = _inventories.FindIndex(i => i.InventoryId == inventory.InventoryId);
+			//if (index != -1)
+			//{
+			//	_inventories[index] = inventory;
+			//}
 
+			// Alternatively, you could find the inventory directly and update its properties
+			var inventoryToUpdate = _inventories.FirstOrDefault(i => i.InventoryId == inventory.InventoryId);
 			// If the inventory is found, update it
-			if (index != -1)
+			if (inventoryToUpdate != null)
 			{
-				_inventories[index] = inventory;
+				inventoryToUpdate.InventoryName = inventory.InventoryName;
+				inventoryToUpdate.Quantity = inventory.Quantity;
+				inventoryToUpdate.Price = inventory.Price;
 			}
-
 			return Task.CompletedTask;
 		}
 
