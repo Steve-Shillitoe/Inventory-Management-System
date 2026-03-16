@@ -56,6 +56,10 @@ else
     override protected async Task OnInitializedAsync()
     {
         inventory ??= await viewInventoryByIdUseCase.ExecuteAsync(invId);
+        if(inventory == null)
+        {
+            navigationManager.NotFound();
+        }
     }
 
     private async Task Update()
