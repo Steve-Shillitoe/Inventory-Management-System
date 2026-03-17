@@ -4,11 +4,21 @@
 <h3>Inventory List</h3>
 <br/>
 <br />
-<InventoryListComponent />
+<EditForm Model="inventoryNameToSearch" FormName="formSearchInventory">
+    <div class="input-group">
+        <InputText class="form-control" @bind-Value="inventoryNameToSearch" placeholder="Search inventory by name..." />
+    </div>
+    <button type="submit" class="btn-success input-group-text">Search</button>
+</EditForm>
+<br />
+<InventoryListComponent SearchInventoryFilter="@inventoryNameToSearch" />
 <br />
 <NavLink class="btn btn-primary" href="/add-inventory">
     Add Inventory
 </NavLink>
 @code {
+    [SupplyParameterFromForm]
+    private string inventoryNameToSearch { get; set; } = string.Empty;
+
    
 }

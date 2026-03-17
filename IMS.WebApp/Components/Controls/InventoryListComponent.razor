@@ -26,8 +26,11 @@
 @code {
     private List<Inventory>? inventories;
 
+    [Parameter]
+    public string? SearchInventoryFilter { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        inventories = (await viewInventoriesByNameUseCase.ExecuteAsync()).ToList();
+        inventories = (await viewInventoriesByNameUseCase.ExecuteAsync(SearchInventoryFilter??string.Empty)).ToList();
     }
 }
