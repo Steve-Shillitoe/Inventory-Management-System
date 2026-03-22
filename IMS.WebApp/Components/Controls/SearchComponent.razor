@@ -1,4 +1,4 @@
-﻿<EditForm Model="searchFilter" FormName="formSearch" OnSubmit="Search">
+﻿<EditForm Enhance="true" Model="searchFilter" FormName="formSearch" OnSubmit="Search">
     <div class="input-group">
         <InputText class="form-control" @bind-Value="searchFilter" placeholder="Type something to search..." />
     </div>
@@ -8,7 +8,7 @@
 
 @code {
     [SupplyParameterFromForm]
-    private string? searchFilter { get; set; } 
+    private string searchFilter { get; set; } = string.Empty;
 
     [Parameter]
     public EventCallback<string> OnSearch { get; set; }
