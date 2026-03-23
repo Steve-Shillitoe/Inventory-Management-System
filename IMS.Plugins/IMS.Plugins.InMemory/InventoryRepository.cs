@@ -82,10 +82,9 @@ namespace IMS.Plugins.InMemory
 			// Check if the inventory to be deleted exists in the list
 			if (inventory != null) { 
 				_inventories.Remove(inventory);
-				return Task.CompletedTask;
 			}
 
-			//return Task.CompletedTask;
+			return Task.CompletedTask;
 		}
 	}
 }
