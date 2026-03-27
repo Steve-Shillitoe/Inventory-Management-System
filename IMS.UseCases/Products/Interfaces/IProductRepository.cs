@@ -11,6 +11,5 @@ namespace IMS.UseCases.Products.Interfaces
 
 		Task<Product?> GetProductByIdAsync(int productId);
 		Task UpdateProductAsync(Product product);
-
 	}
 }

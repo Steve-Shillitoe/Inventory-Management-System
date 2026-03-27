@@ -1,4 +1,4 @@
-﻿
+﻿@inject IDeleteProductUseCase deleteProductUseCase
 @inject NavigationManager navigationManager
 
 @if (this.Product is not null)
@@ -15,17 +15,25 @@
             </a>
         </td>
         <td>
-            
+            <button class="btn btn-light" @onclick="async () => { await HandleDelete(Product.ProductId); }">Delete</button>
         </td>
     </tr>
 }
 @code {
+    // State variable. If it changes, the component will re-render.
     [Parameter]
     public Product? Product { get; set; }
 
     private async Task DeleteProduct(int productId)
     {
-            //await deleteProductUseCase.ExecuteAsync(productId);
-            navigationManager.Refresh();
+        //await deleteProductUseCase.ExecuteAsync(productId);
+        navigationManager.Refresh();
+    }
+    private async Task HandleDelete(int productId)
+    {
+        await deleteProductUseCase.ExecuteAsync(productId);
+        // After deleting the product, we set the Product property to null 
+        // to trigger a re-render of the component.
+        Product = null;
     }
 }
