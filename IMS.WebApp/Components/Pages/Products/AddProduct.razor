@@ -1,10 +1,12 @@
 ﻿@page "/add-product"
+@rendermode InteractiveServer
+
 @inject IAddProductUseCase addProductUseCase
 @inject NavigationManager navigationManager
 
 <h3>Add Product</h3>
 
-<EditForm Model="product" FormName="formAddProduct" OnValidSubmit="Save">
+<EditForm Model="product"  OnValidSubmit="Save">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -42,7 +44,18 @@
 </EditForm>
 
 @code {
-    [SupplyParameterFromForm]
+    // State parameter to hold the product being added
+    // Initialized to a new Product instance to bind the form inputs
+    // The [SupplyParameterFromForm] attribute is not needed here 
+    // since we are not receiving this from a parent component, 
+    // but rather using it as a local state for the form.
+    //
+    // This state variable is bound to the SignalR connection, 
+    // allowing real-time updates as the user interacts with the form.
+    //
+    // No post back needed on the <EditForm> as everything goes through the SignalR connection.
+    // Additionally, the <EditForm> component does not need a FormName when using InteractiveServer, 
+    // formally know as Blazor Server, as the form state is managed on the server side.
     private Product product { get; set; } = new Product();
 
     private async Task Save()
