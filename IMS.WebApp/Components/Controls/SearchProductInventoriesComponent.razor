@@ -10,11 +10,11 @@
 <button type="button" class="btn-primary input-group-text" @onclick="HandleSearch">Search</button>
 @if (inventories != null && inventories.Count > 0)
 {
-    <div style="overflow-y:auto; max-height:300px; border:1px solid silver; padding-top:5px">
-        <ul style="list-style-type:none">
+    <div class="search-result">
+        <ul>
             @foreach (var inventory in inventories)
             {
-                <li @key="inventory.InventoryId" style="cursor:pointer">
+                <li @key="inventory.InventoryId">
                     @inventory.InventoryName
                 </li>
             }
