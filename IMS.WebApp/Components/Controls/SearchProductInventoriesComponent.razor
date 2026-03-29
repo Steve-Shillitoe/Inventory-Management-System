@@ -2,7 +2,9 @@
 
 
 <div class="input-group">
-    <input class="form-control" @bind-value="searchFilter" placeholder="Type something to search..." />
+    <input class="form-control" @bind-value="searchFilter" 
+    @bind-value:event="oninput"
+    placeholder="Type something to search..." />
 </div>
 <br />
 <button type="button" class="btn-primary input-group-text" @onclick="HandleSearch">Search</button>
@@ -25,13 +27,15 @@ else
 }
 
 @code {
-    private string searchFilter = string.Empty;
+    private string _searchFilter;
+    private string searchFilter { get => _searchFilter; set { _searchFilter = value; HandleSearch(); } }
+
     //Initialise empty list
     private List<Inventory> inventories = new List<Inventory>();  
 
     private async Task HandleSearch()
     {
         inventories = (await viewInventoriesByNameUseCase.ExecuteAsync(searchFilter)).ToList();
-
+        StateHasChanged();
     }
 }
