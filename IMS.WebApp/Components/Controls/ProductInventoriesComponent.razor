@@ -1,0 +1,13 @@
+﻿<SearchProductInventoriesComponent></SearchProductInventoriesComponent>
+@if(Product is not null && Product.ProductInventories is not null
+ && Product.ProductInventories.Count() > 0)
+{
+    <table class="table">
+
+    </table>
+}
+
+@code {
+    [Parameter]
+    public Product? Product { get; set; }
+}
