@@ -16,6 +16,29 @@ namespace IMS.CoreBusiness
 		[Range(0, int.MaxValue, ErrorMessage = "Price must be greator or equal to 0.")]
 		public double Price { get; set; }
 
-		//public List<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
+		//One product can have many inventories,
+		//and one inventory can have many products.
+		//So we have a many-to-many relationship between Product and Inventory.
+		//To represent this relationship, we use a junction table called ProductInventory.
+		//The Product class has a collection of ProductInventory to represent
+		//the many-to-many relationship with Inventory.
+		public List<ProductInventory> ProductInventories { get; set; }
+
+		public void AddInventory(Inventory inventory)
+		{
+			if (!this.ProductInventories.Any(
+				x => x.Inventory is not null &&
+				x.Inventory.InventoryName.Equals(inventory.InventoryName)))
+			{
+				this.ProductInventories.Add(new ProductInventory
+				{
+					InventoryId = inventory.InventoryId,
+					Inventory = inventory,
+					InventoryQuantity = 1,
+					ProductId = this.ProductId,
+					Product = this
+				});
+			}
+		}
 	}
 }
