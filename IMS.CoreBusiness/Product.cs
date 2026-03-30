@@ -22,7 +22,7 @@ namespace IMS.CoreBusiness
 		//To represent this relationship, we use a junction table called ProductInventory.
 		//The Product class has a collection of ProductInventory to represent
 		//the many-to-many relationship with Inventory.
-		public List<ProductInventory> ProductInventories { get; set; }
+		public List<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
 
 		public void AddInventory(Inventory inventory)
 		{
@@ -40,5 +40,11 @@ namespace IMS.CoreBusiness
 				});
 			}
 		}
+
+		public void RemoveInventory(ProductInventory inventory)
+		{
+			this.ProductInventories?.Remove(inventory);
+		}
+
 	}
 }
