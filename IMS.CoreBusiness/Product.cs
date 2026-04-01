@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using IMS.CoreBusiness.Validations;
+using System.ComponentModel.DataAnnotations;
 
 namespace IMS.CoreBusiness
 {
@@ -22,6 +23,8 @@ namespace IMS.CoreBusiness
 		//To represent this relationship, we use a junction table called ProductInventory.
 		//The Product class has a collection of ProductInventory to represent
 		//the many-to-many relationship with Inventory.
+
+		[Product_EnsurePriceGreaterThanInventoriesCost]
 		public List<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
 
 		public void AddInventory(Inventory inventory)
