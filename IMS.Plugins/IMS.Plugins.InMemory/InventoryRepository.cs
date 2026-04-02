@@ -72,7 +72,15 @@ namespace IMS.Plugins.InMemory
 
 		public async Task<Inventory?> GetInventoryByIdAsync(int id)
 		{
-			return await Task.FromResult(_inventories.FirstOrDefault(x => x.InventoryId == id));
+			var inventory = _inventories.First(x => x.InventoryId == id);
+			var newInventory = new Inventory
+			{
+				InventoryId = inventory.InventoryId,
+				InventoryName = inventory.InventoryName,
+				Price = inventory.Price,
+				Quantity = inventory.Quantity
+			};
+			return await Task.FromResult(newInventory);
 		}
 
 		public Task DeleteInventoryByIdAsync(int inventoryId)

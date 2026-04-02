@@ -68,9 +68,51 @@ namespace IMS.Plugins.InMemory
 				.Contains(name, StringComparison.OrdinalIgnoreCase));
 		}
 
+		// Might return null if the product with the specified ID is not found,
+		// so we use Product? to indicate that it can be null.
 		public async Task<Product?> GetProductByIdAsync(int id)
 		{
-			return await Task.FromResult(_products.FirstOrDefault(x => x.ProductId == id));
+			var product = _products.First(x => x.ProductId == id);
+			var newProduct = new Product();
+			if (product != null)
+			{
+				newProduct.ProductId = product.ProductId;
+				newProduct.ProductName = product.ProductName;
+				newProduct.Quantity = product.Quantity;
+				newProduct.Price = product.Price;
+				newProduct.ProductInventories = new List<ProductInventory>();
+				if (product.ProductInventories != null && product.ProductInventories.Count() > 0)
+				{
+					foreach (var productInventory in product.ProductInventories)
+					{
+						var newProductInventory = new ProductInventory
+						{
+							ProductId = productInventory.ProductId,
+							InventoryId = productInventory.InventoryId,
+							Product = newProduct,
+							Inventory = new Inventory(),
+							InventoryQuantity = productInventory.InventoryQuantity
+						};
+						newProduct.ProductInventories.Add(new ProductInventory
+						{
+							ProductId = productInventory.ProductId,
+							InventoryId = productInventory.InventoryId,
+							Product = product,
+							Inventory = new Inventory(),
+							InventoryQuantity = productInventory.InventoryQuantity
+						});
+						if (productInventory.Inventory != null)
+						{
+							newProductInventory.Inventory.InventoryId = productInventory.Inventory.InventoryId;
+							newProductInventory.Inventory.InventoryName = productInventory.Inventory.InventoryName;
+							newProductInventory.Inventory.Quantity = productInventory.Inventory.Quantity;
+							newProductInventory.Inventory.Price = productInventory.Inventory.Price;
+						}
+						newProduct.ProductInventories.Add(newProductInventory);
+					};
+				}
+			}
+			return await Task.FromResult(newProduct);
 		}
 
 		public Task DeleteProductByIdAsync(int productId)
