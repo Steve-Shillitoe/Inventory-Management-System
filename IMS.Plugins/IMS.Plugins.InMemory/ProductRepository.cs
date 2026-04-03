@@ -29,15 +29,15 @@ namespace IMS.Plugins.InMemory
 			return Task.CompletedTask;
 		}
 
-		public Task UpdateProductAsync(Product product)
+		public async Task UpdateProductAsync(Product product)
 		{
 			// Check if another product with the same name exists (excluding the current product)
 			// This ensures that we don't have duplicate product names after the update
 			// The check is done by comparing the product name of the product being updated with all other inventories in the list,
 			// excluding the one being updated (identified by its ProductId).
 			if (_products.Any(x => x.ProductId != product.ProductId &&
-				x.ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase)))
-				return Task.CompletedTask;
+				x.ProductName.ToLower().Equals(product.ProductName.ToLower(), StringComparison.OrdinalIgnoreCase)))
+				return;
 
 			// Find the index of the product to be edited
 			//var index = _products.FindIndex(i => i.ProductId == product.ProductId);
@@ -55,7 +55,7 @@ namespace IMS.Plugins.InMemory
 				productToUpdate.Quantity = product.Quantity;
 				productToUpdate.Price = product.Price;
 			}
-			return Task.CompletedTask;
+			return;
 		}
 
 		public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
