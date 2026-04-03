@@ -7,10 +7,10 @@ using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.UseCases.Products
 {
-	public class ViewProductsByIDUseCase : IViewProductByIDUseCase
+	public class ViewProductsByIdUseCase : IViewProductByIdUseCase
 	{
 		private readonly IProductRepository ProductRepository;
-		public ViewProductsByIDUseCase(IProductRepository ProductRepository)
+		public ViewProductsByIdUseCase(IProductRepository ProductRepository)
 		{
 			this.ProductRepository = ProductRepository;
 

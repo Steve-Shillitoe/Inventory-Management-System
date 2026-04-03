@@ -33,7 +33,7 @@ builder.Services.AddTransient<IViewProductsByNameUseCase, ViewProductsByNameUseC
 builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
 builder.Services.AddTransient<IAddProductUseCase, AddProductUseCase>();
 builder.Services.AddTransient<IEditProductUseCase, EditProductUseCase>();
-builder.Services.AddTransient<IViewProductByIDUseCase, ViewProductsByIDUseCase>();
+builder.Services.AddTransient<IViewProductByIdUseCase, ViewProductsByIdUseCase>();
 
 var app = builder.Build();
 
