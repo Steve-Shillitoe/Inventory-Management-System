@@ -14,12 +14,20 @@ namespace IMS.Plugins.InMemory
 		{
 		}
 
-		public void purchaseAsync(string poNumber, Inventory inventory, int quanity, 
+		public void purchaseAsync(string poNumber, Inventory inventory, int quanity,
 			string doneBy, double price)
 		{
 			inventoryTransactions.Add(new InventoryTransaction
 			{
-				InventoryId = inventory.InventoryId
-			}
+				PONumber = poNumber,
+				InventoryId = inventory.InventoryId,
+				QuantityBefore = inventory.Quantity,
+				ActivityType = InventoryTransactionType.PurchaseInventory,
+				QuantityAfter = inventory.Quantity + quanity,
+				TransactionDate = DateTime.Now,
+				DoneBy = doneBy,
+				UnitPrice = price
+			});
+		}
 	}
 }
