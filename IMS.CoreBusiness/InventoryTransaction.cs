@@ -17,8 +17,8 @@ namespace IMS.CoreBusiness
 		[Required]
 		public int QuantityBefore { get; set; }
 
-		//[Required]
-		//public InventoryTransactionType ActivityType { get; set; }
+		[Required]
+		public InventoryTransactionType ActivityType { get; set; }
 
 		[Required]
 		public int QuantityAfter { get; set; }
