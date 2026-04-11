@@ -9,7 +9,7 @@
     <ul class="search-result">
         @foreach (var item in searchResults)
         {
-            <li @key="item.Id">@item.Name</li>
+            <li @key="item.Id" @onclick="()=>HandleSelectedItem(item)">@item.Name</li>
         }
     </ul>
 }
@@ -20,6 +20,8 @@
 
     [Parameter]
     public Func<string, List<ItemViewModel>>? SearchFunction { get; set; }
+
+    private ItemViewModel? selectedItem = null;
 
     private string _userInput = string.Empty;
     private List<ItemViewModel>? searchResults = new List<ItemViewModel>();
@@ -35,6 +37,13 @@
             }
            
         }
+    }
+
+    private void HandleSelectedItem(ItemViewModel item)
+    {
+        selectedItem = item;
+        userInput = item.Name?? string.Empty;
+        searchResults = null; // Clear search results after selection
     }
 
     public class ItemViewModel
