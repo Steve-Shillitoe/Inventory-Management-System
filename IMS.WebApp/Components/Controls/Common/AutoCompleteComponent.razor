@@ -1,15 +1,25 @@
 ﻿<div class="form-group">
     <label for="search">@label</label>
     <input type="text" class="form-control" 
-        @bind-value="userInput" @bind-value:event="oninput"/>
+        @bind-value="userInput" 
+        @bind-value:event="oninput"
+        @onkeyup="HandleKeyUp"/>
 </div>
 
 @if (searchResults != null && searchResults.Count > 0)
 {
     <ul class="search-result">
-        @foreach (var item in searchResults)
-        {
-            <li @key="item.Id" @onclick="()=>HandleSelectedItem(item)">@item.Name</li>
+        @{
+            int itemIndex = 0;
+            foreach (var item in searchResults)
+            {
+                <li @key="item.Id" 
+                class="@(currentItemIndex == itemIndex ? "selected" : "")"
+                @onclick="()=>HandleSelectedItem(item)">
+                @item.Name
+                </li>
+                itemIndex++;
+            }
         }
     </ul>
 }
@@ -35,15 +45,57 @@
             {
                 searchResults = SearchFunction(userInput);
             }
-           
+
         }
+    }
+
+    private ItemViewModel? currentItem = null;
+    private int currentItemIndex = -1;
+
+    private void ClearSelectionHighlighting()
+    {
+        currentItemIndex = -1;
+        currentItem = null;
+        searchResults = null;
     }
 
     private void HandleSelectedItem(ItemViewModel item)
     {
+        ClearSelectionHighlighting();
         selectedItem = item;
         userInput = item.Name?? string.Empty;
         searchResults = null; // Clear search results after selection
+    }
+
+    private void HandleKeyUp(KeyboardEventArgs e)
+    {
+        if ((e.Code == "ArrowDown" || e.Code == "ArrowUp") 
+            && searchResults != null && searchResults.Count > 0)
+        {
+            if (e.Code == "ArrowDown" && currentItemIndex < searchResults.Count  -1)
+            {
+                currentItem = searchResults[++currentItemIndex];
+            }
+            else if (e.Code == "ArrowUp"  )
+            {
+                if (currentItemIndex > 0)
+                {
+                    currentItem = searchResults[--currentItemIndex];
+                }
+                else
+                {
+                    currentItemIndex = -1;
+                    currentItem = null;
+                }
+            }
+        }
+        else if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            if (currentItem != null)
+            {
+                HandleSelectedItem(currentItem);
+            }
+        }
     }
 
     public class ItemViewModel
