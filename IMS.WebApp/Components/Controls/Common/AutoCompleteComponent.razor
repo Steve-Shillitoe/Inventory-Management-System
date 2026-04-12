@@ -31,6 +31,9 @@
     [Parameter]
     public Func<string, List<ItemViewModel>>? SearchFunction { get; set; }
 
+    [Parameter]
+    public EventCallback<ItemViewModel> onItemSelected { get; set; }
+
     private ItemViewModel? selectedItem = null;
 
     private string _userInput = string.Empty;
@@ -62,9 +65,15 @@
     private void HandleSelectedItem(ItemViewModel item)
     {
         ClearSelectionHighlighting();
-        selectedItem = item;
-        userInput = item.Name?? string.Empty;
-        searchResults = null; // Clear search results after selection
+
+        if(item != null)
+        {
+            onItemSelected.InvokeAsync(item);
+            selectedItem = item;
+            userInput = item.Name ?? string.Empty;
+            searchResults = null; // Clear search results after selection
+        }
+        
     }
 
     private void HandleKeyUp(KeyboardEventArgs e)
