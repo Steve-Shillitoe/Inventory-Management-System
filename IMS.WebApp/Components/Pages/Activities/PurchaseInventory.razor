@@ -3,17 +3,47 @@
 
 @using static IMS.WebApp.Components.Controls.Common.AutoCompleteComponent
 @inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+@inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
 
 <h3>Purchase Inventory</h3>
 <br/>
-<AutoCompleteComponent 
-    label="Inventory" 
-    SearchFunction="SearchInventory"
-    onItemSelected="HandleItemSelected"/>
+<EditForm Model="purchaseViewModel" OnValidSubmit="Purchase">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="poNumber">Purchase Order Number</label>
+        <InputText id="poNumber" class="form-control" @bind-Value="purchaseViewModel.PONumber" />
+    </div>
+    <br/>
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group">
+                <AutoCompleteComponent label="Inventory to Purchase"
+                                       SearchFunction="SearchInventory"
+                                       onItemSelected="HandleItemSelected" />
+            </div>
+            @if (purchaseViewModel.InventoryPrice > 0)
+            {
+                <br />
+                <text>Price</text>
+                @purchaseViewModel.InventoryPrice.ToString("C")
+            }
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <InputNumber id="quantity" class="form-control" @bind-Value="purchaseViewModel.QuantityToPurchase" />
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Purchase</button>
+</EditForm>
+
+
+
 
 @code {
-    private ItemViewModel? selectedItem = null;
-
+    private PurchaseViewModel purchaseViewModel = new PurchaseViewModel();
     private List<ItemViewModel>? SearchInventory(string name)
     {
         var list = ViewInventoriesByNameUseCase.ExecuteAsync(name).GetAwaiter().GetResult();
@@ -26,8 +56,18 @@
         })?.ToList();
 
     }
-    private void HandleItemSelected(ItemViewModel item)
+    private async Task HandleItemSelected(ItemViewModel item)
     {
-        selectedItem = item;
+        purchaseViewModel.InventoryId = item.Id;
+        var inventory = ViewInventoryByIdUseCase.ExecuteAsync(item.Id).GetAwaiter().GetResult();
+        if (inventory != null)
+        {
+            purchaseViewModel.InventoryPrice = inventory.Price;
+        }
+    }
+
+    private void Purchase(EditContext args)
+    {
+        throw new NotImplementedException();
     }
 }
