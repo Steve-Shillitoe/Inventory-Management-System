@@ -1,9 +1,11 @@
 ﻿@page "/purchase"
+
 @rendermode InteractiveServer
 
 @using static IMS.WebApp.Components.Controls.Common.AutoCompleteComponent
 @inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 @inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
+@inject IPurchaseInventoryUseCase PurchaseInventoryUseCase
 
 <h3>Purchase Inventory</h3>
 <br/>
@@ -44,6 +46,8 @@
 
 @code {
     private PurchaseViewModel purchaseViewModel = new PurchaseViewModel();
+    private Inventory? selectedInventory = null; 
+
     private List<ItemViewModel>? SearchInventory(string name)
     {
         var list = ViewInventoriesByNameUseCase.ExecuteAsync(name).GetAwaiter().GetResult();
@@ -59,15 +63,25 @@
     private async Task HandleItemSelected(ItemViewModel item)
     {
         purchaseViewModel.InventoryId = item.Id;
-        var inventory = ViewInventoryByIdUseCase.ExecuteAsync(item.Id).GetAwaiter().GetResult();
-        if (inventory != null)
+        selectedInventory = await ViewInventoryByIdUseCase.ExecuteAsync(item.Id);
+        if (selectedInventory != null)
         {
-            purchaseViewModel.InventoryPrice = inventory.Price;
+            purchaseViewModel.InventoryPrice = selectedInventory.Price;
         }
     }
 
-    private void Purchase(EditContext args)
+    private async Task Purchase()
     {
-        throw new NotImplementedException();
+        
+        await PurchaseInventoryUseCase.ExecuteAsync(
+            purchaseViewModel.PONumber, 
+            selectedInventory, 
+            purchaseViewModel.QuantityToPurchase,
+            "Steve");
+
+        purchaseViewModel = new PurchaseViewModel();
+        selectedInventory = null;
+        
     }
+
 }
