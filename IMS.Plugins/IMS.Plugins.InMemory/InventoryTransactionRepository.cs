@@ -29,5 +29,20 @@ namespace IMS.Plugins.InMemory
 				UnitPrice = price
 			});
 		}
+
+		public void produceAsync(string productionNumber, Inventory inventory, int quanityToConsume, string doneBy, double price)
+		{
+			inventoryTransactions.Add(new InventoryTransaction
+			{
+				ProductionNumber = productionNumber,
+				InventoryId = inventory.InventoryId,
+				QuantityBefore = inventory.Quantity,
+				ActivityType = InventoryTransactionType.ProduceProduct,
+				QuantityAfter = inventory.Quantity - quanityToConsume,
+				TransactionDate = DateTime.Now,
+				DoneBy = doneBy,
+				UnitPrice = price
+			});
+		}
 	}
 }
