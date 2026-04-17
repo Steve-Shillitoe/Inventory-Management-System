@@ -1,4 +1,5 @@
 ﻿using IMS.CoreBusiness;
+using IMS.UseCases.Activities.Interfaces;
 using IMS.UseCases.PluginInterfaces;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace IMS.UseCases.Activities
 {
-	public class ProduceProductUseCase
+	public class ProduceProductUseCase : IProduceProductUseCase
 	{
 		private readonly IProductTransactionRepository _productTransactionRepository;
 		private readonly IProductRepository _productRepository;
@@ -22,7 +23,7 @@ namespace IMS.UseCases.Activities
 								int quantity, string doneBy)
 		{
 			// Add transaction record
-			await _productTransactionRepository.ProduceAsyn(productionNumber, product, quantity, doneBy);
+			await _productTransactionRepository.ProduceAsyn(productionNumber, product, quantity, 0, doneBy);
 
 			// Decrease inventory quantity
 
